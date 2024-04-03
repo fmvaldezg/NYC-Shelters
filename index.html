@@ -37,7 +37,7 @@ body { margin: 0; padding: 0; }
     map.on('load', () => {
         map.addSource('places', {
             'type': 'geojson',
-            'data': 'https://github.com/fmvaldezg/NYC-Shelters/blob/main/data/shelters.geojson'
+            'data': 'https://raw.githubusercontent.com/fmvaldezg/NYC-Shelters/main/data/shelters.geojson'
         });
 
         // Add a layer showing the places.
@@ -77,7 +77,7 @@ body { margin: 0; padding: 0; }
 
             // Populate the popup and set its coordinates
             // based on the feature found.
-            popup.setLngLat(coordinates).setHTML(Total_Shelters).addTo(map);
+            popup.setLngLat(coordinates).setHTML(description).addTo(map);
         });
 
         map.on('mouseleave', 'places', () => {
