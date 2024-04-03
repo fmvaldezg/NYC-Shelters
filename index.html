@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <title>NYC Shelters</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+<script src='https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.js'></script>
+<link href='https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.min.css' rel='stylesheet'>
 <style>
 body { margin: 0; padding: 0; }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
@@ -21,17 +23,64 @@ body { margin: 0; padding: 0; }
             Helvetica,
             sans-serif;
     }
+
+    .map-overlay {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgb(227,229,230);
+      padding: 0px;
+      border-radius: 10px;
+      font-family: Arial, sans-serif;
+      z-index: 1;
+    }
+
+    .bookmarks {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: rgb(227,229,230);
+      padding: 10px;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+      z-index: 1;
+    }
+
+    .switch-container {
+      display: flex;
+      align-items: center;
+      margin-right: 10px; /* Add margin to the right */
+    }
+
+    .switch-container div:last-child {
+      margin-left: 10px; /* Add margin to the left for the text */
+    }
+
 </style>
 <div id="map"></div>
+<div class="map-overlay">
+</div>
+<div class="bookmarks">
+<div>Navigate to:</div>
+<div class="inline-flex flex--column">
+<button class="btn btn--gray btn--pill-vt" onclick="navigateToBookmark(1, 70, 69.68)">Manhattan</button>
+<button class="btn btn--gray btn--pill-vc" onclick="navigateToBookmark(2, 56.50, -17.60)">Bronx</button>
+<button class="btn btn--gray btn--pill-vc" onclick="navigateToBookmark(3, 49.53, -125.11)">Queens</button>
+<button class="btn btn--gray btn--pill-vc" onclick="navigateToBookmark(4, 67.50, 0)">Brooklyn</button>
+<button class="btn btn--gray btn--pill-vb" onclick="navigateToBookmark(5, 60.36, -104.04)">Staten Island</button>
+</div>
+</div>
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZm12YWxkZXpnODQiLCJhIjoiY2w5eWJzMzkwMDNiaDNvbGltamV1ajdvNiJ9.esyugI1HyBVPAQcRN551xw';
     const map = new mapboxgl.Map({
         container: 'map',
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
         style: 'mapbox://styles/fmvaldezg84/clprdduyw00q201pgbqr1gg7q',
-        center: [-73.97562, 40.70854],
-        zoom: 11.58,
-        pitch:67.50
+        center: [-73.97495, 40.69496],
+        zoom: 10,
+        pitch:0
     });
 
     map.on('load', () => {
@@ -80,7 +129,67 @@ body { margin: 0; padding: 0; }
             map.getCanvas().style.cursor = '';
         });
     });
+
+
+    function navigateToBookmark(bookmarkId, pitch, bearing) {
+      switch (bookmarkId) {
+          case 1:
+            map.flyTo({
+              center: [-73.99077, 40.73734],
+              zoom: 12.68,
+              pitch: pitch,
+              bearing: bearing,
+              speed: 0.8,
+              curve: 1.2,
+            });
+            break;
+          case 2:
+            map.flyTo({
+              center: [-73.86705, 40.84781],
+              zoom: 12.60,
+              pitch: pitch,
+              bearing: bearing,
+              speed: 0.8,
+              curve: 1.2,
+            });
+            break;
+          case 3:
+            map.flyTo({
+              center: [-73.81406, 40.72203],
+              zoom: 12.35,
+              pitch: pitch,
+              bearing: bearing,
+              speed: 0.8,
+              curve: 1.2,
+            });
+            break;
+            case 4:
+            map.flyTo({
+              center: [-73.96734, 40.60872],
+              zoom: 12.77,
+              pitch: pitch,
+              bearing: bearing,
+              speed: 0.8,
+              curve: 1.2,
+            });
+            break;
+            case 5:
+            map.flyTo({
+              center: [-74.11437, 40.60522],
+              zoom: 12.24,
+              pitch: pitch,
+              bearing: bearing,
+              speed: 0.8,
+              curve: 1.2,
+            });
+            break;
+          default:
+            break;
+        }
+      
+    }
 </script>
+
 
 
 </body>
