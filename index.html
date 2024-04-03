@@ -35,16 +35,16 @@ body { margin: 0; padding: 0; }
     });
 
     map.on('load', () => {
-        map.addSource('places', {
+        map.addSource('shelters', {
             'type': 'geojson',
             'data': 'https://raw.githubusercontent.com/fmvaldezg/NYC-Shelters/main/data/shelters.geojson'
         });
 
         // Add a layer showing the places.
         map.addLayer({
-            'id': 'places',
+            'id': 'shelters-layer',
             'type': 'fill-extrusion',
-            'source': 'places',
+            'source': 'shelters',
             'paint':{
                 'fill-extrusion-height': ["interpolate", ["linear"], ["get", "Total_Shelters"], 0, 0, 43, 1550],
                 'fill-extrusion-base':0,
@@ -60,27 +60,27 @@ body { margin: 0; padding: 0; }
             closeOnClick: false
         });
 
-        map.on('mouseenter', 'places', (e) => {
+        map.on('mouseenter', 'shelters-layer', (e) => {
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
-            // Copy coordinates array.
-            const coordinates = e.features[0].geometry.coordinates.slice();
-            const description = e.features[0].properties.Total_Shelters;
+            const features = map.queryRenderedFeatures(e.point, { layers: ['shelters-layer'] });
 
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            // If there are no features, return
+            if (!features.length) {
+                return;
             }
+
+            // Copy coordinates array.
+            const coordinates = features[0].geometry.coordinates.slice();
+            const description = features[0].properties.Total_Shelters;
 
             // Populate the popup and set its coordinates
             // based on the feature found.
             popup.setLngLat(coordinates).setHTML(description).addTo(map);
         });
 
-        map.on('mouseleave', 'places', () => {
+        map.on('mouseleave', 'shelters-layer', () => {
             map.getCanvas().style.cursor = '';
             popup.remove();
         });
