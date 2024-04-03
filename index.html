@@ -29,23 +29,10 @@ body { margin: 0; padding: 0; }
         container: 'map',
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
         style: 'mapbox://styles/fmvaldezg84/clprdduyw00q201pgbqr1gg7q',
-        center: [-77.04, 38.907],
-        zoom: 11.15
+        center: [-73.97126, 40.70782],
+        zoom: 10.46,
+        pitch: 55
     });
-
-    map.on('load', () => {
-        map.addSource('places', {
-            'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/fmvaldezg/NYC-Shelters/4b7f7748f40fbe625319773801674a72c81aad33/data/shelters.geojson'
-        });
-
-        // Add a layer showing the places.
-        map.addLayer({
-            'id': 'places',
-            'type': 'fill',
-            'source': 'places',
-            'fill-color': blue,
-        });
 
         // Create a popup, but don't add it to the map yet.
         const popup = new mapboxgl.Popup({
@@ -53,13 +40,13 @@ body { margin: 0; padding: 0; }
             closeOnClick: false
         });
 
-        map.on('mouseenter', 'places', (e) => {
+        map.on('mouseenter', 'shelters', (e) => {
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
             // Copy coordinates array.
             const coordinates = e.features[0].geometry.coordinates.slice();
-            const description = e.features[0].properties.description;
+            const description = e.features[0].properties.Total_Shelters;
 
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears
@@ -70,14 +57,13 @@ body { margin: 0; padding: 0; }
 
             // Populate the popup and set its coordinates
             // based on the feature found.
-            popup.setLngLat(coordinates).setHTML(Total_Shelters).addTo(map);
+            popup.setLngLat(coordinates).setHTML(description).addTo(map);
         });
 
-        map.on('mouseleave', 'places', () => {
+        map.on('mouseleave', 'shelters', () => {
             map.getCanvas().style.cursor = '';
             popup.remove();
         });
-    });
 </script>
 
 
