@@ -56,6 +56,35 @@ body { margin: 0; padding: 0; }
       margin-left: 10px; /* Add margin to the left for the text */
     }
 
+    #features {
+      top: 0;
+      height: 100px;
+      margin-top: 20px;
+      width: 300px;
+    }
+
+    #legend {
+      position: absolute; /* or 'absolute' */
+      bottom: 30px; /* adjust as needed */
+      right: 10px; /* adjust as needed */
+      line-height: 18px;
+      height: 100;
+      width: 100;
+      background-color: rgb(227,229,230);
+      padding: 10px;
+      border-radius: 10px;
+      font-family: Arial, sans-serif;
+      z-index: 1;
+    }
+
+    .legend-key {
+      display: inline-block;
+      border-radius: 20%;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+    }
+
 </style>
 <div id="map"></div>
 <div class="map-overlay">
@@ -70,6 +99,7 @@ body { margin: 0; padding: 0; }
 <button class="btn btn--gray btn--pill-vb" onclick="navigateToBookmark(5, 60.36, -104.04)">Staten Island</button>
 </div>
 </div>
+<div class='legend' id='legend'>Number of Shelters</div>
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
 
 <script>
@@ -84,6 +114,42 @@ body { margin: 0; padding: 0; }
     });
 
     map.on('load', () => {
+        map.getCanvas().style.cursor = 'default';
+
+        const layers = [
+            '0-2',
+            '2-3',
+            '3-5',
+            '5-8',
+            '8-13',
+            '> 13'
+        ];
+        const colors = [
+            '#E54848',
+            '#E96B6B',
+            '#ED8D8D',
+            '#F1B0B0',
+            '#F5D2D2',
+            '#F9F5F5'
+
+        ];
+
+        const legend = document.getElementById('legend');
+
+        layers.forEach((layer, i) => {
+        const color = colors[i];
+        const item = document.createElement('div');
+        const key = document.createElement('span');
+        key.className = 'legend-key';
+        key.style.backgroundColor = color;
+
+        const value = document.createElement('span');
+        value.innerHTML = `${layer}`;
+        item.appendChild(key);
+        item.appendChild(value);
+        legend.appendChild(item);
+        });
+
         map.addSource('shelters', {
             'type': 'geojson',
             'data': 'https://raw.githubusercontent.com/fmvaldezg/NYC-Shelters/main/data/shelters.geojson'
@@ -98,6 +164,7 @@ body { margin: 0; padding: 0; }
                 'fill-extrusion-height': ["interpolate", ["linear"], ["get", "Total_Shelters"], 0, 0, 43, 1550],
                 'fill-extrusion-base':0,
                 'fill-extrusion-color': ["step",["get", "Total_Shelters"],"#E54848",2,"#E96B6B",3,"#ED8D8D",5,"#F1B0B0",8,"#F5D2D2",13,"#F9F5F5"],
+                //'fill-extrusion-color': ["step",["get", "Total_Shelters"],"#F9F5F5",2,"#F5D2D2",3,"#F1B0B0",5,"#ED8D8D",8,"#E96B6B",13,"#E54848"],
                 'fill-extrusion-vertical-scale': 1,
                 'fill-extrusion-opacity': 0.5
             } 
