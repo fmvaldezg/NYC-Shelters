@@ -63,26 +63,32 @@ body { margin: 0; padding: 0; }
       width: 300px;
     }
 
-    #legend {
-      position: absolute; /* or 'absolute' */
-      bottom: 30px; /* adjust as needed */
-      right: 10px; /* adjust as needed */
-      line-height: 18px;
-      height: 100;
-      width: 100;
-      background-color: rgb(227,229,230);
-      padding: 10px;
-      border-radius: 10px;
-      font-family: Arial, sans-serif;
-      z-index: 1;
+    .legend {
+        background-color: rgb(227,229,230);
+        border-radius: 3px;
+        bottom: 30px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        font:
+            12px/20px 'Helvetica Neue',
+            Arial,
+            Helvetica,
+            sans-serif;
+        padding: 10px;
+        position: absolute;
+        right: 10px;
+        z-index: 1;
     }
 
-    .legend-key {
-      display: inline-block;
-      border-radius: 20%;
-      width: 10px;
-      height: 10px;
-      margin-right: 5px;
+    .legend h4 {
+        margin: 0 0 10px;
+    }
+
+    .legend div span {
+        border-radius: 50%;
+        display: inline-block;
+        height: 10px;
+        margin-right: 5px;
+        width: 10px;
     }
 
 </style>
@@ -99,7 +105,15 @@ body { margin: 0; padding: 0; }
 <button class="btn btn--gray btn--pill-vb" onclick="navigateToBookmark(5, 60.36, -104.04)">Staten Island</button>
 </div>
 </div>
-<div class='legend' id='legend'>Number of Shelters</div>
+<div id="state-legend" class="legend">
+  <h4>Number of Shelters</h4>
+  <div><span style="background-color: #F9F5F5"></span>> 13</div>
+  <div><span style="background-color: #F5D2D2"></span>8 - 13</div>
+  <div><span style="background-color: #F1B0B0"></span>5 - 8</div>
+  <div><span style="background-color: #ED8D8D"></span>3 - 5</div>
+  <div><span style="background-color: #E96B6B"></span>2 - 3</div>
+  <div><span style="background-color: #E54848"></span>0 - 2</div>
+</div>
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
 
 <script>
@@ -115,40 +129,6 @@ body { margin: 0; padding: 0; }
 
     map.on('load', () => {
         map.getCanvas().style.cursor = 'default';
-
-        const layers = [
-            '0-2',
-            '2-3',
-            '3-5',
-            '5-8',
-            '8-13',
-            '> 13'
-        ];
-        const colors = [
-            '#E54848',
-            '#E96B6B',
-            '#ED8D8D',
-            '#F1B0B0',
-            '#F5D2D2',
-            '#F9F5F5'
-
-        ];
-
-        const legend = document.getElementById('legend');
-
-        layers.forEach((layer, i) => {
-        const color = colors[i];
-        const item = document.createElement('div');
-        const key = document.createElement('span');
-        key.className = 'legend-key';
-        key.style.backgroundColor = color;
-
-        const value = document.createElement('span');
-        value.innerHTML = `${layer}`;
-        item.appendChild(key);
-        item.appendChild(value);
-        legend.appendChild(item);
-        });
 
         map.addSource('shelters', {
             'type': 'geojson',
