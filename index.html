@@ -107,12 +107,12 @@ body { margin: 0; padding: 0; }
 </div>
 <div id="state-legend" class="legend">
   <h4>Number of Shelters</h4>
-  <div><span style="background-color: #F9F5F5"></span>> 13</div>
-  <div><span style="background-color: #F5D2D2"></span>8 - 13</div>
-  <div><span style="background-color: #F1B0B0"></span>5 - 8</div>
-  <div><span style="background-color: #ED8D8D"></span>3 - 5</div>
-  <div><span style="background-color: #E96B6B"></span>2 - 3</div>
-  <div><span style="background-color: #E54848"></span>0 - 2</div>
+  <div><span style="background-color: #F9F5F5"></span>30 - 43</div>
+  <div><span style="background-color: #F5D2D2"></span>20 - 29</div>
+  <div><span style="background-color: #F1B0B0"></span>10 - 19</div>
+  <div><span style="background-color: #ED8D8D"></span>4 - 9</div>
+  <div><span style="background-color: #E96B6B"></span>1 - 3</div>
+  <div><span style="background-color: #E54848"></span>0</div>
 </div>
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
 
@@ -143,8 +143,12 @@ body { margin: 0; padding: 0; }
             'paint':{
                 'fill-extrusion-height': ["interpolate", ["linear"], ["get", "Total_Shelters"], 0, 0, 43, 1550],
                 'fill-extrusion-base':0,
-                'fill-extrusion-color': ["step",["get", "Total_Shelters"],"#E54848",2,"#E96B6B",3,"#ED8D8D",5,"#F1B0B0",8,"#F5D2D2",13,"#F9F5F5"],
+                //'fill-extrusion-color': ["step",["get", "Total_Shelters"],"#E54848",0,"#E96B6B",3,"#ED8D8D",9,"#F1B0B0",19,"#F5D2D2",29,"#F9F5F5"], reds
+                'fill-extrusion-color': ["step",["get", "Total_Shelters"],"#016c59",0,"#1c9099",3,"#67a9cf",9,"#a6bddb",19,"#d0d1e6",29,"#f6eff7"], //Greens
                 //'fill-extrusion-color': ["step",["get", "Total_Shelters"],"#F9F5F5",2,"#F5D2D2",3,"#F1B0B0",5,"#ED8D8D",8,"#E96B6B",13,"#E54848"],
+                //'fill-extrusion-color': ["step",["get", "Total_Shelters"],"#34065f",0,"#8856a7",3,"#8c96c6",9,"#9ebcda",19,"#bfd3e6",29,"#edf8fb"], //Purple
+                //'fill-extrusion-color': ["step",["get", "Total_Shelters"],"#762a83",0,"#af8dc3",3,"#e7d4e8",9,"#d9f0d3",19,"#7fbf7b",29,"#1b7837"], //GreenPurple
+                //'fill-extrusion-color': ["step",["get", "Total_Shelters"],"#02CCF4",0,"#29ADEB",3,"#6394E3",9,"#9EA4E2",19,"#DED6F9",29,"#F6F2FF"], //x-ray
                 'fill-extrusion-vertical-scale': 1,
                 'fill-extrusion-opacity': 0.5
             } 
